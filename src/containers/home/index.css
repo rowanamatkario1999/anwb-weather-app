@@ -1,18 +1,14 @@
 .homepage-container {
     height: 75vh;
-    margin-left: 25%;
-    margin-right: 25%;
-}
-
-.search-section {
-    text-align: center;
 }
 
 .search-section input {
     margin: 0.5rem;
-    padding: 0.5rem;
+    padding: 0.533333rem 1.6rem;
     width: 100%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); /* X-offset, Y-offset, Blur-radius, Spread-radius, Color */
 }
+
 
 .search-section button {
     margin: 0.5rem;
@@ -28,3 +24,99 @@
 .home-logo img {
     vertical-align: middle; /* Nodig om verticaal te centreren binnen line-height */
 }
+
+.weather-widget {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 50%;
+    background-color: #f9f9f9;
+}
+
+.weather-widget h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 10px;
+    padding-bottom: 9px; /* Verhoogd naar 9px om 4px ruimte toe te voegen boven de 1px border */
+    border-bottom: 1px solid lightgrey;
+}
+
+.weather-widget h2 span {
+    color: lightgrey;
+    font-size: 0.8em;
+}
+
+.weather-widget h4 {
+    margin: 10px 0;
+    color: #666;
+}
+
+.weather-widget p {
+    font-size: 16px;
+    line-height: 1.4;
+    color: #333;
+    margin-left: 20px;
+}
+
+/* Basisstijl voor de zoek-input */
+.form-control {
+    transition: transform 0.2s ease-in-out; /* Voegt een soepele overgang toe voor de transform eigenschap */
+}
+
+/* Stijl voor hover-effect */
+.form-control:hover {
+    transform: scale(1.05); /* Vergroot de input met 5% */
+}
+
+/* Aanpassing voor de input group */
+.input-group .form-control {
+    border-left: 0; /* Verwijder de linker rand van de input */
+    border-right: 0; /* Verwijder de rechter rand van de input */
+}
+
+.input-group .form-control:focus {
+    box-shadow: none; /* Verwijder de focus schaduw rond de input */
+}
+
+.input-group-text {
+    background: #fff; /* Zet de achtergrondkleur van het input group text element */
+    border-right: 0; /* Verwijder de rechter rand */
+}
+
+.input-group button {
+    border-left: 0; /* Verwijder de linker rand van de knop */
+}
+
+/* Verwijder randen en achtergrond van de knop om het eruit te laten zien als een icoon */
+.input-group button {
+    background: transparent;
+    border: none;
+}
+
+/* Zorg ervoor dat de iconen dezelfde kleur hebben als de tekst */
+.fa-search, .fa-arrow-right {
+    color: #495057;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 2;
+        transform: translateY(0);
+    }
+}
+
+.fade-in-up {
+    animation: fadeInUp 2s ease-out;
+}
+
+h1 {
+    font-family: 'Roboto', sans-serif; /* Gebruik hier de naam van het door jou gekozen lettertype */
+}
+
+
+

@@ -1,13 +1,13 @@
-import React, {useEffect, useState} from 'react';
+import React, {Fragment, useEffect, useState} from 'react';
 import { useLocation } from 'react-router-dom';
-import {Button} from "react-bootstrap";
+import {Col, Row} from "react-bootstrap";
 
 
 const WeatherPage = () => {
     const location = useLocation();
     const address = location.state?.address;
     const [data, setData] = useState(null);
-    const [tempMin, setTempMin] = useState('');
+    const [temp, setTemp] = useState([]);
 
     const openWeatherApi = async (city: string) => {
         const apiKey = '0b45600bea02aa2ea48c0d6b3841e7d2'; // Vervang dit met je eigen API-sleutel
@@ -29,29 +29,39 @@ const WeatherPage = () => {
         }
     }, [address]);
 
+    //TODO: FIX ALGEMENE TEMPERRATUREN FUNCTIE
+
     const kelvinToCelsius = (kelvin: any) => {
-        return (kelvin - 273.15).toFixed(2); // Afgerond op 2 decimalen
+        return (kelvin - 273.15).toFixed(2);
     };
 
-    const getSpecifikData = (data: any) => {
-        if (data && data.main && data.main.feels_like) {
-            const celsius = kelvinToCelsius(data.main.feels_like);
-            return `${celsius} °C`;
-        } else {
-            return 'Niet beschikbaar';
-        }
+    const getTemp = (data: any) => {
+        // if (data && data.main && data.main.feels_like) {
+        //     const feelsLike = set;
+        //     const feelsLike = kelvinToCelsius(data.main.feels_like);
+        //     return `${feelsLike} °C`;
+        // } else {
+        //     return 'Niet beschikbaar';
+        // }
     };
 
 
     return (
-        <div>
-            <h2>{address}</h2>
-            {data && (
-                <div>
-                    <h4>Gevoelstemperatuur: {getSpecifikData(data)}</h4>
-                </div>
-            )}
-        </div>
+        <Fragment>
+            <div className="weather-widget">
+                <h2>{address} | <span>Nederland</span> </h2>
+                {data && (
+                    <Row>
+                        <Col md={4}>
+                            Gevoelstemperatuur
+                        </Col>
+                        <Col md={8}>
+                            <h4>45:</h4>
+                        </Col>
+                    </Row>
+                    )}
+            </div>
+        </Fragment>
     );
 };
 

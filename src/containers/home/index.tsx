@@ -1,7 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import {Badge, Button, Col, Form, Modal, Row, Table, InputGroup, Dropdown} from "react-bootstrap";
+import {
+    Badge,
+    Button,
+    Col,
+    Form,
+    Modal,
+    Row,
+    Table,
+    InputGroup,
+    Dropdown,
+    Container,
+    Navbar,
+    Nav, FormControl
+} from "react-bootstrap";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import {faArrowRight, faSearch} from '@fortawesome/free-solid-svg-icons';
 import './index.css';
 import logoImage from '../../assets/anwb-logo.png';
 import { useNavigate } from 'react-router-dom';
@@ -53,6 +66,7 @@ const HomePage = () => {
         try {
             const response = await fetch(url);
             const data = await response.json();
+            console.log(data);
 
             // Zoek naar stad in verschillende eigenschappen van de adresinformatie
             let city = 'Onbekend'; // Standaardwaarde
@@ -106,51 +120,81 @@ const HomePage = () => {
 
 
     return (
-        <div className="homepage-container">
-            <div className="home-logo">
-                <img src={logoImage} alt="Home Logo"/>
-            </div>
-            <div className="search-section">
-                <Row>
-                    <Col md={12}>
-                        <Form>
-                            <Form.Group controlId="formBasicSearch">
-                                <InputGroup>
-                                    <Form.Control
-                                        type="text"
-                                        placeholder="Zoek op locatie"
-                                        onChange={handleSearchInput}
-                                    />
-                                    <Dropdown>
-                                        <Dropdown.Menu show={suggestions.length > 0}>
-                                            {suggestions.length > 0 ? (
-                                                suggestions.map((location: any, index: any) => (
-                                                    <Dropdown.Item key={index} onClick={() => handleLocationSelect(location.display_name)}>
-                                                        {location.display_name}
-                                                    </Dropdown.Item>
-                                                ))
-                                            ) : (
-                                                <Dropdown.Item disabled>Locatie niet gevonden</Dropdown.Item>
-                                            )}
-                                        </Dropdown.Menu>
-                                    </Dropdown>
-                                </InputGroup>
-                            </Form.Group>
-                        </Form>
-                        {!location && !address && (
-                            <Button onClick={handleLocationPermission}>Gebruik mijn huidige locatie</Button>
-                        )}
+        <>
+            <Navbar bg="light" expand="lg">
+                <Container>
+                    <Navbar.Brand href="#home">
+                        <img
+                            src={logoImage} // Vervang dit door je afbeeldingspad
+                            width="auto" // Dit kun je instellen om de grootte van je logo te regelen
+                            height="50" // Pas de hoogte aan indien nodig
+                            className="d-inline-block align-top" // Bootstrap-klassen voor uitlijning
+                            alt="ANWB Logo" // Alt-tekst voor het logo
+                            style={{ backgroundColor: 'transparent' }} // Maakt de achtergrond van de img-tag transparant
+                        />
 
-                        <div className="location-info">
-                            <p>Locatie: {address}</p>
-                            {address && <Button variant="primary" onClick={handleWeatherClick}>Zie weerbericht</Button>}
-                        </div>
+                    </Navbar.Brand>
+                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                    <Navbar.Collapse id="basic-navbar-nav">
+                        <Nav className="me-auto">
+                            <Nav.Link href="#home">Home</Nav.Link>
+                            <Nav.Link href="#link">Buienradar</Nav.Link>
+                        </Nav>
+                    </Navbar.Collapse>
+                </Container>
+            </Navbar>
+            <Container>
+                <div className="homepage-container">
+                    <div className="search-section">
+                        <Row>
+                            <Col md={12}>
+                                <h1 style={{ fontFamily: "'Roboto', sans-serif" }}>Ben jij ook zo benieuwd naar het weer?</h1>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col md={8}>
+                                <Form>
+                                    <Form.Group controlId="formBasicSearch">
+                                        <InputGroup>
+                                            <FormControl
+                                                placeholder="Ik ben op zoek naar..."
+                                                aria-label="Search"
+                                                onChange={handleSearchInput}
+                                            />
+                                            {address && <Button variant="outline-secondary" onClick={handleWeatherClick}>
+                                                <FontAwesomeIcon icon={faArrowRight} />
+                                            </Button>}
+                                        </InputGroup>
+                                            <Dropdown>
+                                                <Dropdown.Menu show={suggestions.length > 0}>
+                                                    {suggestions.length > 0 ? (
+                                                        suggestions.map((location: any, index: any) => (
+                                                            <Dropdown.Item key={index} onClick={() => handleLocationSelect(location.display_name)}>
+                                                                {location.display_name}
+                                                            </Dropdown.Item>
+                                                        ))
+                                                    ) : (
+                                                        <Dropdown.Item disabled>Locatie niet gevonden</Dropdown.Item>
+                                                    )}
+                                                </Dropdown.Menu>
+                                            </Dropdown>
+                                    </Form.Group>
+                                </Form>
+                            </Col>
+                            <Col md={4}>
+                                {!location && !address && (
+                                    <Button variant='light' onClick={handleLocationPermission}>Gebruik mijn huidige locatie</Button>
+                                )}
+                            </Col>
 
-
-                    </Col>
-                </Row>
-            </div>
-        </div>
+                            <div className="location-info">
+                                {address ? <p className="fade-in-up">{address}</p> : null}
+                            </div>
+                        </Row>
+                    </div>
+                </div>
+            </Container>
+        </>
     );
 };
 
