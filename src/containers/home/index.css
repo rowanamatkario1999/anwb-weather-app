@@ -1,10 +1,7 @@
 .homepage-container {
     height: 75vh;
-    background-size: cover;
-    /*display: flex;*/
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    margin-left: 25%;
+    margin-right: 25%;
 }
 
 .search-section {
@@ -20,4 +17,14 @@
 .search-section button {
     margin: 0.5rem;
     padding: 0.5rem;
+}
+
+.home-logo {
+    display: flex;
+    justify-content: center;
+    height: 250px;
+}
+
+.home-logo img {
+    vertical-align: middle; /* Nodig om verticaal te centreren binnen line-height */
 }

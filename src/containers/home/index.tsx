@@ -32,7 +32,9 @@ const HomePage = () => {
             navigator.geolocation.getCurrentPosition(
                 async (position) => {
                     const addr = await reverseGeocode(position.coords.latitude, position.coords.longitude);
-                    setAddress(addr);
+                    // @ts-ignore
+                    const addrString = addr.toString();
+                    setAddress(addrString);
                     setLocation({
                         latitude: position.coords.latitude,
                         longitude: position.coords.longitude,
@@ -47,17 +49,31 @@ const HomePage = () => {
 
 
     const reverseGeocode = async (latitude: any, longitude: any) => {
-        console.log(latitude);
         const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`;
         try {
             const response = await fetch(url);
             const data = await response.json();
-            return data.display_name;
+
+            // Zoek naar stad in verschillende eigenschappen van de adresinformatie
+            let city = 'Onbekend'; // Standaardwaarde
+            if (data.address.city) {
+                city = data.address.city;
+            } else if (data.address.town) {
+                city = data.address.town;
+            } else if (data.address.village) {
+                city = data.address.village;
+;            }
+
+            return city;
+
         } catch (error) {
             console.error("Error tijdens het ophalen van gegevens:", error);
             return null;
         }
     };
+
+
+
 
     const handleLocationPermission = () => {
         setLocationPermission(true);
@@ -92,7 +108,7 @@ const HomePage = () => {
     return (
         <div className="homepage-container">
             <div className="home-logo">
-                <img src={logoImage} alt="Home Logo" width="250" height="250"/>
+                <img src={logoImage} alt="Home Logo"/>
             </div>
             <div className="search-section">
                 <Row>
@@ -100,9 +116,6 @@ const HomePage = () => {
                         <Form>
                             <Form.Group controlId="formBasicSearch">
                                 <InputGroup>
-                                    <InputGroup.Text>
-                                        <FontAwesomeIcon icon={faSearch} />
-                                    </InputGroup.Text>
                                     <Form.Control
                                         type="text"
                                         placeholder="Zoek op locatie"
@@ -124,7 +137,9 @@ const HomePage = () => {
                                 </InputGroup>
                             </Form.Group>
                         </Form>
-                        {!location && <Button onClick={handleLocationPermission}>Gebruik mijn huidige locatie</Button>}
+                        {!location && !address && (
+                            <Button onClick={handleLocationPermission}>Gebruik mijn huidige locatie</Button>
+                        )}
 
                         <div className="location-info">
                             <p>Locatie: {address}</p>
