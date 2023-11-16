@@ -1,0 +1,23 @@
+.homepage-container {
+    height: 75vh;
+    background-size: cover;
+    /*display: flex;*/
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.search-section {
+    text-align: center;
+}
+
+.search-section input {
+    margin: 0.5rem;
+    padding: 0.5rem;
+    width: 100%;
+}
+
+.search-section button {
+    margin: 0.5rem;
+    padding: 0.5rem;
+}
