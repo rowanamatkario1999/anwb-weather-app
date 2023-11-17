@@ -1,3 +1,7 @@
+/* App.css */
+@import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
+
+
 .homepage-container {
     height: 75vh;
 }
@@ -115,7 +119,7 @@
 }
 
 h1 {
-    font-family: 'Roboto', sans-serif; /* Gebruik hier de naam van het door jou gekozen lettertype */
+    font-family: 'Montserrat', sans-serif;
 }
 
 

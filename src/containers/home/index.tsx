@@ -11,12 +11,13 @@ import {
     Dropdown,
     Container,
     Navbar,
-    Nav, FormControl
+    Nav, FormControl, Card
 } from "react-bootstrap";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faArrowRight, faSearch} from '@fortawesome/free-solid-svg-icons';
 import './index.css';
 import logoImage from '../../assets/anwb-logo.png';
+import cloudy from '../../assets/cloudy.svg';
 import { useNavigate } from 'react-router-dom';
 
 
@@ -30,7 +31,37 @@ const HomePage = () => {
     const [address, setAddress] = useState('');
     const [locationPermission, setLocationPermission] = useState(false);
     const [suggestions, setSuggestions] = useState([]);
+    const [data, setData] = useState([]);
+    const [weather, setWeather] = useState([]);
+    const [temp, setTemp] = useState([]);
     const navigate = useNavigate();
+
+    const openWeatherApi = async (city: string) => {
+        const apiKey = '0b45600bea02aa2ea48c0d6b3841e7d2'; // Vervang dit met je eigen API-sleutel
+        const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`;
+
+        try {
+            const response = await fetch(url);
+            const data = await response.json();
+            return data;
+
+        } catch (error) {
+            console.error("Error tijdens het ophalen van gegevens:", error);
+        }
+    };
+
+    useEffect(() => {
+        if (address) {
+            openWeatherApi(address)
+                .then((r) => {
+                    setData(r);
+                    setWeather(r.weather);
+                    setTemp(r.main);
+                });
+        }
+
+    }, [address]);
+
 
     const handleWeatherClick = () => {
         navigate('/weather', { state: { address } });
@@ -66,7 +97,6 @@ const HomePage = () => {
         try {
             const response = await fetch(url);
             const data = await response.json();
-            console.log(data);
 
             // Zoek naar stad in verschillende eigenschappen van de adresinformatie
             let city = 'Onbekend'; // Standaardwaarde
@@ -85,9 +115,6 @@ const HomePage = () => {
             return null;
         }
     };
-
-
-
 
     const handleLocationPermission = () => {
         setLocationPermission(true);
@@ -118,10 +145,24 @@ const HomePage = () => {
         setAddress(locationName);
     };
 
+    const getImageSrc = (type: any) => {
+        switch (type) {
+            case 'Clouds':
+                return {cloudy};
+            case 'sun':
+                return 'sun.png';
+            case 'moon':
+                return 'moon.png';
+            default:
+                return 'default.png'; // Standaard afbeelding als er geen overeenkomst is
+        }
+    };
+
+    // const imageSrc = getImageSrc((weather as any)[0].main);
 
     return (
         <>
-            <Navbar bg="light" expand="lg">
+            <Navbar bg="light" expand="lg" style={{marginBottom: '5%'}}>
                 <Container>
                     <Navbar.Brand href="#home">
                         <img
@@ -148,7 +189,7 @@ const HomePage = () => {
                     <div className="search-section">
                         <Row>
                             <Col md={12}>
-                                <h1 style={{ fontFamily: "'Roboto', sans-serif" }}>Ben jij ook zo benieuwd naar het weer?</h1>
+                                <h1 style={{ fontFamily: "Montserrat, sans-serif" }}>Ben jij ook zo benieuwd naar het weer?</h1>
                             </Col>
                         </Row>
                         <Row>
@@ -183,12 +224,27 @@ const HomePage = () => {
                             </Col>
                             <Col md={4}>
                                 {!location && !address && (
-                                    <Button variant='light' onClick={handleLocationPermission}>Gebruik mijn huidige locatie</Button>
+                                    <Button variant='light' onClick={handleLocationPermission} style={{ fontFamily: "Montserrat, sans-serif" }}>Gebruik mijn huidige locatie</Button>
                                 )}
                             </Col>
 
                             <div className="location-info">
-                                {address ? <p className="fade-in-up">{address}</p> : null}
+                                {address ?
+
+                                    <Card className="fade-in-up">
+                                    <Card.Body>
+                                        <Row>
+                                            <Col md={8} style={{ borderBottom: '1px solid #ccc', paddingBottom: '20px' }}>
+                                                <h4>{address} | <span style={{color: 'lightgray', fontSize: '100px'}}>Nederland</span></h4>
+                                            </Col>
+                                        </Row>
+                                        <Row>
+                                            <Col>
+                                                {/*{(weather as any) && (weather as any).length > 0 ? <img src={imageSrc} alt="Afbeelding" /> : null}*/}
+                                            </Col>
+                                        </Row>
+                                        </Card.Body>
+                                </Card> : null}
                             </div>
                         </Row>
                     </div>
