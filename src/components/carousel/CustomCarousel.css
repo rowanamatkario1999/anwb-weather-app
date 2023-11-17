@@ -1,0 +1,43 @@
+.carousel-control-next-icon,
+.carousel-control-prev-icon {
+    width: 30px;
+    height: 30px;
+}
+
+.carousel-content {
+    display: flex;
+    justify-content: center;
+    padding: 50px;
+    transition: color 0.5s ease;
+}
+
+.blue-bg .carousel-content {
+    background-color: #003366;
+    color: white;
+}
+
+.grey-bg .carousel-content {
+    background-color: #f8f9fa;
+    color: #007bff;
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 768px) {
+    .carousel-content {
+        padding: 15px;
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .carousel-content {
+        padding: 10px;
+        text-align: center;
+    }
+
+    .carousel-control-next-icon,
+    .carousel-control-prev-icon {
+        width: 25px;
+        height: 25px;
+    }
+}

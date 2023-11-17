@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect, Fragment} from 'react';
 import {
     Badge,
     Button,
@@ -17,8 +17,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faArrowRight, faSearch} from '@fortawesome/free-solid-svg-icons';
 import './index.css';
 import logoImage from '../../assets/anwb-logo.png';
-import cloudy from '../../assets/cloudy.svg';
+import cloudy from '../../assets/cloudy.png';
 import { useNavigate } from 'react-router-dom';
+import Footer from "../../components/footer";
+import CustomCarousel from "../../components/carousel";
 
 
 interface Location {
@@ -54,6 +56,7 @@ const HomePage = () => {
         if (address) {
             openWeatherApi(address)
                 .then((r) => {
+                    console.log(r);
                     setData(r);
                     setWeather(r.weather);
                     setTemp(r.main);
@@ -154,26 +157,39 @@ const HomePage = () => {
             case 'moon':
                 return 'moon.png';
             default:
-                return 'default.png'; // Standaard afbeelding als er geen overeenkomst is
+                return 'default.png';
         }
     };
 
-    // const imageSrc = getImageSrc((weather as any)[0].main);
+    const imageSrc = getImageSrc((weather as any)[0]?.main);
 
+    const kelvinToCelsius = (kelvin: any) => {
+        return parseFloat((kelvin - 273.15).toFixed(0));
+    };
+
+    const getFormattedDate = () => {
+        const now = new Date();
+        return new Intl.DateTimeFormat('nl-NL', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric'
+        }).format(now);
+    };
+
+    const todaysDate = getFormattedDate();
     return (
         <>
             <Navbar bg="light" expand="lg" style={{marginBottom: '5%'}}>
                 <Container>
                     <Navbar.Brand href="#home">
                         <img
-                            src={logoImage} // Vervang dit door je afbeeldingspad
-                            width="auto" // Dit kun je instellen om de grootte van je logo te regelen
-                            height="50" // Pas de hoogte aan indien nodig
-                            className="d-inline-block align-top" // Bootstrap-klassen voor uitlijning
-                            alt="ANWB Logo" // Alt-tekst voor het logo
-                            style={{ backgroundColor: 'transparent' }} // Maakt de achtergrond van de img-tag transparant
+                            src={logoImage}
+                            width="100"
+                            height="auto"
+                            className="d-inline-block align-top"
+                            alt="ANWB Logo"
+                            style={{ backgroundColor: 'transparent', zIndex: '10' }}
                         />
-
                     </Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
@@ -224,32 +240,50 @@ const HomePage = () => {
                             </Col>
                             <Col md={4}>
                                 {!location && !address && (
-                                    <Button variant='light' onClick={handleLocationPermission} style={{ fontFamily: "Montserrat, sans-serif" }}>Gebruik mijn huidige locatie</Button>
+                                    <Button variant='light' onClick={handleLocationPermission} style={{ fontFamily: "Montserrat, sans-serif", borderRadius: '50px', backgroundColor: 'lightgrey'}}>Gebruik mijn huidige locatie</Button>
                                 )}
                             </Col>
 
-                            <div className="location-info">
+                            <div className="location-info" style={{marginTop: '3%'}}>
                                 {address ?
-
-                                    <Card className="fade-in-up">
-                                    <Card.Body>
-                                        <Row>
-                                            <Col md={8} style={{ borderBottom: '1px solid #ccc', paddingBottom: '20px' }}>
-                                                <h4>{address} | <span style={{color: 'lightgray', fontSize: '100px'}}>Nederland</span></h4>
-                                            </Col>
-                                        </Row>
-                                        <Row>
-                                            <Col>
-                                                {/*{(weather as any) && (weather as any).length > 0 ? <img src={imageSrc} alt="Afbeelding" /> : null}*/}
-                                            </Col>
-                                        </Row>
-                                        </Card.Body>
-                                </Card> : null}
+                                    <Fragment>
+                                        <h3 style={{ fontFamily: "Montserrat, sans-serif" }}>ANWB Buienradar</h3>
+                                        <Card className="fade-in-up" style={{marginTop: '15px', marginBottom: '25px'}}>
+                                            <Card.Body>
+                                                <Row>
+                                                    <Col md={12} style={{ borderBottom: '1px solid #ccc', paddingBottom: '2px' }}>
+                                                        <p style={{ fontFamily: "Montserrat, sans-serif", float:'right'}}>{address}</p>
+                                                        <p style={{ fontFamily: "Montserrat, sans-serif"}}>Vandaag: {todaysDate}</p>
+                                                    </Col>
+                                                </Row>
+                                                <Row style={{marginTop: '10px'}}>
+                                                    <Col md={1} style={{marginLeft: '5px'}}>
+                                                        <img
+                                                            src={cloudy}
+                                                            width="100"
+                                                            height="auto"
+                                                            className="d-inline-block align-top"
+                                                            alt="ANWB Logo"
+                                                            style={{ backgroundColor: 'transparent', zIndex: '10' }}
+                                                        />
+                                                    </Col>
+                                                    <Col md={2} className="d-flex align-items-center justify-content-center">
+                                                        <h1>{kelvinToCelsius((temp as any).feels_like)}°C</h1>
+                                                    </Col>
+                                                    <Col md={5}>
+                                                        <h3></h3>
+                                                    </Col>
+                                                </Row>
+                                            </Card.Body>
+                                        </Card>
+                                    </Fragment> : null}
                             </div>
                         </Row>
+                        <CustomCarousel />
                     </div>
                 </div>
             </Container>
+            <Footer />
         </>
     );
 };
