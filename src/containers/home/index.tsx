@@ -1,10 +1,8 @@
 import React, {useState, useEffect, Fragment} from 'react';
 import {
-    Badge,
     Button,
     Col,
     Form,
-    Modal,
     Row,
     Table,
     InputGroup,
@@ -14,18 +12,19 @@ import {
     Nav, FormControl, Card
 } from "react-bootstrap";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {faArrowRight, faSearch} from '@fortawesome/free-solid-svg-icons';
+import {faArrowRight} from '@fortawesome/free-solid-svg-icons';
 import './index.css';
 import logoImage from '../../assets/anwb-logo.png';
 import cloudy from '../../assets/cloudy1.jpeg';
 import { useNavigate } from 'react-router-dom';
 import Footer from "../../components/footer";
 import CustomCarousel from "../../components/carousel";
+import {actions} from "../../services/api"
 
 
 interface Location {
-    latitude: number;
-    longitude: number;
+    latitude: number; //breed
+    longitude: number; //lengte
 }
 const HomePage = () => {
     const [location, setLocation] = useState<Location | null>(null);
@@ -40,33 +39,21 @@ const HomePage = () => {
     const [sys, setSys] = useState([]);
     const navigate = useNavigate();
 
-    const openWeatherApi = async (city: string) => {
-        const apiKey = '0b45600bea02aa2ea48c0d6b3841e7d2'; // Vervang dit met je eigen API-sleutel
-        const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`;
-
-        try {
-            const response = await fetch(url);
-            const data = await response.json();
-            return data;
-
-        } catch (error) {
-            console.error("Error tijdens het ophalen van gegevens:", error);
-        }
-    };
-
     useEffect(() => {
         if (address) {
-            openWeatherApi(address)
-                .then((r) => {
+            actions.openWeatherApi(address)
+                .then((r: any) => {
                     console.log(r);
                     setData(r);
                     setWeather(r.weather);
                     setTemp(r.main);
                     setWind(r.wind);
                     setSys(r.sys);
+                })
+                .catch((error: any) => {
+                    console.error("Fout bij het ophalen van weergegevens:", error);
                 });
         }
-
     }, [address]);
 
 
@@ -105,8 +92,7 @@ const HomePage = () => {
             const response = await fetch(url);
             const data = await response.json();
 
-            // Zoek naar stad in verschillende eigenschappen van de adresinformatie
-            let city = 'Onbekend'; // Standaardwaarde
+            let city = 'Onbekend';
             if (data.address.city) {
                 city = data.address.city;
             } else if (data.address.town) {
@@ -152,21 +138,8 @@ const HomePage = () => {
         setAddress(locationName);
     };
 
-    const getImageSrc = (type: any) => {
-        switch (type) {
-            case 'Clouds':
-                return {cloudy};
-            case 'sun':
-                return 'sun.png';
-            case 'moon':
-                return 'moon.png';
-            default:
-                return 'default.png';
-        }
-    };
 
-    const imageSrc = getImageSrc((weather as any)[0]?.main);
-
+    /* ---- Converted Functions ---- */
     const kelvinToCelsius = (kelvin: any) => {
         return parseFloat((kelvin - 273.15).toFixed(0));
     };
@@ -183,7 +156,7 @@ const HomePage = () => {
     const todaysDate = getFormattedDate();
 
     const convertUnixTime = (unixTime: any) => {
-        const date = new Date(unixTime * 1000); // Converteert de Unix-tijd naar milliseconden
+        const date = new Date(unixTime * 1000);
         return date.toLocaleString("nl-NL", { hour: '2-digit', minute: '2-digit', hour12: false });
     };
 
@@ -336,7 +309,7 @@ const HomePage = () => {
                                     </Fragment> : null}
                             </div>
                         </Row>
-                        <CustomCarousel />
+                        {address ? null : <CustomCarousel />}
                     </div>
                 </div>
             </Container>
