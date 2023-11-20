@@ -121,6 +121,10 @@ h3 {
     font-family: 'Montserrat', sans-serif;
 }
 
+span {
+    font-family: 'Montserrat', sans-serif;
+}
+
 .thema-item {
     margin-bottom: 1rem;
 }
@@ -129,6 +133,12 @@ h3 {
     width: 50px;
     margin-bottom: 0.5rem;
 }
+
+.weather-table td, .weather-table th {
+    border: none;
+    font-family: 'Montserrat', sans-serif;
+}
+
 
 @media (max-width: 768px) {
     .thema-icon {

@@ -17,7 +17,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faArrowRight, faSearch} from '@fortawesome/free-solid-svg-icons';
 import './index.css';
 import logoImage from '../../assets/anwb-logo.png';
-import cloudy from '../../assets/cloudy.png';
+import cloudy from '../../assets/cloudy1.jpeg';
 import { useNavigate } from 'react-router-dom';
 import Footer from "../../components/footer";
 import CustomCarousel from "../../components/carousel";
@@ -36,6 +36,8 @@ const HomePage = () => {
     const [data, setData] = useState([]);
     const [weather, setWeather] = useState([]);
     const [temp, setTemp] = useState([]);
+    const [wind, setWind] = useState([]);
+    const [sys, setSys] = useState([]);
     const navigate = useNavigate();
 
     const openWeatherApi = async (city: string) => {
@@ -60,6 +62,8 @@ const HomePage = () => {
                     setData(r);
                     setWeather(r.weather);
                     setTemp(r.main);
+                    setWind(r.wind);
+                    setSys(r.sys);
                 });
         }
 
@@ -177,6 +181,28 @@ const HomePage = () => {
     };
 
     const todaysDate = getFormattedDate();
+
+    const convertUnixTime = (unixTime: any) => {
+        const date = new Date(unixTime * 1000); // Converteert de Unix-tijd naar milliseconden
+        return date.toLocaleString("nl-NL", { hour: '2-digit', minute: '2-digit', hour12: false });
+    };
+
+    const sunriseTime = convertUnixTime((sys as any).sunrise);
+    const sunsetTime = convertUnixTime((sys as any).sunset);
+
+    const convertSpeedToKmh = (speedInMps: any) => {
+        return speedInMps * 3.6;
+    }
+
+    const convertDegreesToDirection = (degrees: any) => {
+        const directions = ['Noord', 'Noordnoordoost', 'Noordoost', 'Oostnoordoost', 'Oost', 'Oostzuidoost', 'Zuidoost', 'Zuidzuidoost', 'Zuid', 'Zuidzuidwest', 'Zuidwest', 'Westzuidwest', 'West', 'Westnoordwest', 'Noordwest', 'Noordnoordwest'];
+        const index = Math.round((degrees % 360) / 22.5);
+        return directions[index] || 'Noord';
+    }
+
+    const speedKmh = convertSpeedToKmh((wind as any).speed); // Omzetten naar km/u
+    const windDirection = convertDegreesToDirection((wind as any).deg); // Omzetten naar kompasrichting
+
     return (
         <>
             <Navbar bg="light" expand="lg" style={{marginBottom: '5%'}}>
@@ -257,21 +283,52 @@ const HomePage = () => {
                                                     </Col>
                                                 </Row>
                                                 <Row style={{marginTop: '10px'}}>
-                                                    <Col md={1} style={{marginLeft: '5px'}}>
+                                                    <Col md={3} className="d-flex align-items-center justify-content-center" style={{ marginLeft: '5px' }}>
                                                         <img
                                                             src={cloudy}
-                                                            width="100"
+                                                            width="200"
                                                             height="auto"
                                                             className="d-inline-block align-top"
                                                             alt="ANWB Logo"
                                                             style={{ backgroundColor: 'transparent', zIndex: '10' }}
                                                         />
                                                     </Col>
-                                                    <Col md={2} className="d-flex align-items-center justify-content-center">
-                                                        <h1>{kelvinToCelsius((temp as any).feels_like)}°C</h1>
+                                                    <Col md={3} className="d-flex align-items-center justify-content-center">
+                                                        <h1>{kelvinToCelsius((temp as any).temp)}°C</h1>
                                                     </Col>
                                                     <Col md={5}>
-                                                        <h3></h3>
+                                                        <Table bordered={false} className="weather-table">
+                                                            <tbody>
+                                                            <tr>
+                                                                <td>Gevoels temperatuur:</td>
+                                                                <td>{kelvinToCelsius((temp as any).feels_like)}°C</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Minimale temperatuur:</td>
+                                                                <td>{kelvinToCelsius((temp as any).temp_min)}°C</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Maximale temperatuur:</td>
+                                                                <td>{kelvinToCelsius((temp as any).temp_max)}°C</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Windsnelheid:</td>
+                                                                <td>{speedKmh.toFixed(2)} km/h</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Windrichting:</td>
+                                                                <td>{windDirection}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Zonsopgang:</td>
+                                                                <td>{sunriseTime}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Zonsondergang:</td>
+                                                                <td>{sunsetTime}</td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </Table>
                                                     </Col>
                                                 </Row>
                                             </Card.Body>
