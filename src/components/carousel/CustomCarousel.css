@@ -21,7 +21,6 @@
     color: #007bff;
 }
 
-/* Media queries for responsiveness */
 @media (max-width: 768px) {
     .carousel-content {
         padding: 15px;

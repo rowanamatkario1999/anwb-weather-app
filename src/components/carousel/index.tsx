@@ -42,7 +42,7 @@ const CustomCarousel = () => {
                         <div className="carousel-text">
                             <h3>{item.title}</h3>
                             <p>{item.content}</p>
-                            {item.icon && <FontAwesomeIcon icon={item.icon} />} {/* Conditional rendering */}
+                            {item.icon && <FontAwesomeIcon icon={item.icon} />}
                         </div>
                     </div>
                 </Carousel.Item>

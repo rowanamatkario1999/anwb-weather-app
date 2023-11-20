@@ -65,13 +65,14 @@ const HomePage = () => {
         if (!locationPermission) return;
 
         if (!navigator.geolocation) {
-            setError('Geolocation is not supported by your browser.');
+            setError('Geolocation werkt niet in je browser');
         } else {
             navigator.geolocation.getCurrentPosition(
                 async (position) => {
                     const addr = await reverseGeocode(position.coords.latitude, position.coords.longitude);
                     // @ts-ignore
                     const addrString = addr.toString();
+                    console.log(addrString);
                     setAddress(addrString);
                     setLocation({
                         latitude: position.coords.latitude,
@@ -79,7 +80,7 @@ const HomePage = () => {
                     });
                 },
                 () => {
-                    setError('Unable to retrieve your location.');
+                    setError('Kan je locatie niet krijgen');
                 }
             );
         }
@@ -242,7 +243,17 @@ const HomePage = () => {
                                     <Button variant='light' onClick={handleLocationPermission} style={{ fontFamily: "Montserrat, sans-serif", borderRadius: '50px', backgroundColor: 'lightgrey'}}>Gebruik mijn huidige locatie</Button>
                                 )}
                             </Col>
-
+                            {address ? null :
+                            <Fragment>
+                                <Col md={6} style={{marginTop: '3%'}}>
+                                    <h5>Welkom bij ANWB Weer App, het meest complete weerplatform!</h5>
+                                    <span>Alleen bij Buienradar heb je snel inzicht in het weer op jouw locatie. Voor het actuele weer en de weersverwachtingen kan je de bekende Buienradar +3, +24 of +48 uur raadplegen. Daarnaast hebben we ook een Motregen-, Sneeuw-, Onweerradar en verschillende weerkaarten met o.a. de actuele temperatuur of wind.</span>
+                                </Col>
+                                <Col md={6} style={{marginTop: '3%'}}>
+                                    <h5>Overal op de hoogte van het weer.</h5>
+                                    <span>Ook zijn de ANWB Weer meldingen (notificaties) verder uitgebreid met een dagelijks weerbericht, UV-melding en een krabalert. Daarnaast hebben we de veelgebruikte buienmeldingen verder verbeterd zodat je altijd weet wanneer het gaat regenen of sneeuwen.</span>
+                                </Col>
+                            </Fragment>}
                             <div className="location-info" style={{marginTop: '3%'}}>
                                 {address ?
                                     <Fragment>

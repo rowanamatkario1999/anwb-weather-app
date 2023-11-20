@@ -28,16 +28,14 @@ const Footer = () => {
                     </Col>
                     <Col md={4}>
                         <h5>Volg ons</h5>
-                        <p>Contact met ANWB</p>
-                        <p>ANWB Alarmcentrale</p>
-                        <p>ANWB Experts</p>
-                        <p>ANWB Verzekeringen</p>
-                        <p>ANWB Winkels</p>
-                        <p>Pechhulp</p>
+                        <p>Nieuwbrief</p>
+                        <p>ANWB Apps</p>
+                        <p>ANWB Podcast</p>
+                        <p>Facebook</p>
+                        <p>Instagram</p>
+                        <p>Twitter</p>
                     </Col>
                 </Row>
-                {/* Extra content zoals het lidmaatschap informatie */}
-                {/* Hier zou je de gekantelde kaarten en overlappende elementen toevoegen */}
             </Container>
         </footer>
     );
