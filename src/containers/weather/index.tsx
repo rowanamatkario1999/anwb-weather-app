@@ -10,7 +10,7 @@ const WeatherPage = () => {
     const [temp, setTemp] = useState([]);
 
     const openWeatherApi = async (city: string) => {
-        const apiKey = '0b45600bea02aa2ea48c0d6b3841e7d2'; // Vervang dit met je eigen API-sleutel
+        const apiKey = '0b45600bea02aa2ea48c0d6b3841e7d2';
         const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`;
 
         try {
@@ -28,8 +28,6 @@ const WeatherPage = () => {
             openWeatherApi(address).then(r => setData(r));
         }
     }, [address]);
-
-    //TODO: FIX ALGEMENE TEMPERRATUREN FUNCTIE
 
     const kelvinToCelsius = (kelvin: any) => {
         return (kelvin - 273.15).toFixed(2);

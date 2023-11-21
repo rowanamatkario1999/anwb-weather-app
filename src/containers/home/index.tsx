@@ -140,7 +140,7 @@ const HomePage = () => {
     };
 
 
-    /* ---- Converted Functions ---- */
+    /* ---- Converted Functions Liever in helper gezet---- */
     const kelvinToCelsius = (kelvin: any) => {
         return parseFloat((kelvin - 273.15).toFixed(0));
     };
@@ -247,7 +247,7 @@ const HomePage = () => {
                             <Fragment>
                                 <Col md={6} style={{marginTop: '3%'}}>
                                     <h5>Welkom bij ANWB Weer App, het meest complete weerplatform!</h5>
-                                    <span>Alleen bij Buienradar heb je snel inzicht in het weer op jouw locatie. Voor het actuele weer en de weersverwachtingen kan je de bekende Buienradar +3, +24 of +48 uur raadplegen. Daarnaast hebben we ook een Motregen-, Sneeuw-, Onweerradar en verschillende weerkaarten met o.a. de actuele temperatuur of wind.</span>
+                                    <span>Alleen bij ANWB heb je snel inzicht in het weer op jouw locatie. Voor het actuele weer en de weersverwachtingen kan je de bekende Buienradar +3, +24 of +48 uur raadplegen. Daarnaast hebben we ook een Motregen-, Sneeuw-, Onweerradar en verschillende weerkaarten met o.a. de actuele temperatuur of wind.</span>
                                 </Col>
                                 <Col md={6} style={{marginTop: '3%'}}>
                                     <h5>Overal op de hoogte van het weer.</h5>

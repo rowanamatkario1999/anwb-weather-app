@@ -1,7 +1,6 @@
-// CustomCarousel.js
 import React from 'react';
 import { Carousel } from 'react-bootstrap';
-import './CustomCarousel.css'; // Make sure the CSS file is imported
+import './CustomCarousel.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRoad } from '@fortawesome/free-solid-svg-icons';
 
